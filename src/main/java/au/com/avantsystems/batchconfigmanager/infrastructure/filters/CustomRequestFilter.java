@@ -2,29 +2,33 @@ package au.com.avantsystems.batchconfigmanager.infrastructure.filters;
 
 import java.io.IOException;
 import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 
-@Order(1)
+@Slf4j
+@Order(2)
 @Configuration
 public class CustomRequestFilter implements Filter {
   @Override
   public void init(FilterConfig filterConfig) throws ServletException {
-
-    System.out.println("Filter name: " + filterConfig.getFilterName());
+    log.info("Loaded {}", filterConfig.getFilterName());
   }
 
   @Override
   public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
       throws IOException, ServletException {
-    System.out.println("Ran filter....1");
+    HttpServletRequest httpServletRequest = (HttpServletRequest) request;
+    //System.out.println(httpServletRequest.getSession().getId());
+    System.out.println(httpServletRequest.getRequestURL());
     chain.doFilter(request, response);
-
-    System.out.println("Ran filter....2");
   }
 
   @Override
   public void destroy() {
-    System.out.println("Filter destroyed...");
+
+    System.out.println("CustomRequestFilter destroyed...");
   }
 }

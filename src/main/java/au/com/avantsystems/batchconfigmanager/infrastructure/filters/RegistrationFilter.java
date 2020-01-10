@@ -2,23 +2,33 @@ package au.com.avantsystems.batchconfigmanager.infrastructure.filters;
 
 import java.io.IOException;
 import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 
+@Slf4j
 @Order(1)
 @Configuration
 public class RegistrationFilter implements Filter {
   @Override
-  public void init(FilterConfig filterConfig) throws ServletException {}
+  public void init(FilterConfig filterConfig) throws ServletException {
+    log.info("Loaded {}", filterConfig.getFilterName());
+  }
 
   @Override
   public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
       throws IOException, ServletException {
-    System.out.println("Reg filter start");
+    HttpServletRequest httpServletRequest = (HttpServletRequest) request;
+    //System.out.println(httpServletRequest.getSession().getId());
+    System.out.println(httpServletRequest.getRequestURL());
     chain.doFilter(request, response);
-    System.out.println("Reg filter end");
+
   }
 
   @Override
-  public void destroy() {}
+  public void destroy() {
+    System.out.println("RegistrationFilter destroyed...");
+  }
 }

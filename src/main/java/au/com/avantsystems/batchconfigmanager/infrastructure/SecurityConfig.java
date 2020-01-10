@@ -14,6 +14,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
+    requestPermitAllConfig(http);
     requestAuthorizationConfig(http);
     loginLogoutConfig(http);
 
@@ -24,11 +25,35 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     // http.csrf();
     // http.cors();
 
-    log.info("Loaded security....");
+    // logic(http);
+
+    log.info("Loaded security configuration");
+  }
+
+  void logic(HttpSecurity http) throws Exception {
+    http.csrf().disable();
+    http.authorizeRequests()
+        .antMatchers("/dist/**", "/plugins/**", "/", "/register", "/home", "/multiform")
+        .permitAll()
+        .anyRequest()
+        .authenticated()
+        .and()
+        .formLogin()
+        .loginPage("/login")
+        .permitAll()
+        .and()
+        .logout()
+        .permitAll();
+  }
+
+  private void requestPermitAllConfig(HttpSecurity http) throws Exception {
+    http.authorizeRequests()
+        .antMatchers("/dist/**", "/plugins/**", "/", "/register", "/home", "/multiform")
+        .permitAll();
   }
 
   private void requestAuthorizationConfig(HttpSecurity http) throws Exception {
-    http.authorizeRequests().antMatchers("/", "/home").permitAll().anyRequest().authenticated();
+    http.authorizeRequests().anyRequest().authenticated();
   }
 
   private void loginLogoutConfig(HttpSecurity http) throws Exception {

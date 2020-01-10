@@ -1,5 +1,6 @@
 package au.com.avantsystems.batchconfigmanager.activities;
 
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -9,9 +10,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class AuthenticationController {
 
   @GetMapping("/login")
-  public String renderLogin() {
-    System.out.println("Got here.....");
-    return "loginForm";
+  public String renderLogin(HttpServletRequest request) {
+    System.out.println("Got here to login...");
+    return "authentication/login";
+  }
+
+  @GetMapping("/register")
+  public String renderRegister(HttpServletRequest request) {
+    System.out.println("Got here to register");
+    return "authentication/register";
   }
 
   @PostMapping("/login")
@@ -22,7 +29,14 @@ public class AuthenticationController {
 
   @GetMapping({"/home", "/index", "/"})
   @ResponseBody
-  public String home() {
+  public String renderHome() {
+    System.out.println("Render home");
     return "Home,index and ...: not authenticated";
+  }
+
+  @GetMapping("/multiform")
+  public String renderMultiform(HttpServletRequest request) {
+    System.out.println("multiform.....");
+    return "multiform";
   }
 }
