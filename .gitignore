@@ -59,3 +59,4 @@ TestRequestLog.json
 .DS_Store
 .gradle
 .vscode
+*.orig
