@@ -25,34 +25,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     log.info("Loaded security configuration");
   }
 
-  @Override
-  protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-    auth.inMemoryAuthentication()
-        .withUser("joshua@email.com")
-        .password(bCryptPasswordEncoder().encode("password"))
-        .roles("USER")
-        .and()
-        .withUser("admin@email.com")
-        .password(bCryptPasswordEncoder().encode("password"))
-        .roles("ADMIN")
-        .and()
-        .withUser("manager@email.com")
-        .password(bCryptPasswordEncoder().encode("password"))
-        .roles("MANAGER");
-  }
 
   private void requestPermitAllConfig(HttpSecurity http) throws Exception {
     http.authorizeRequests()
-        // .antMatchers("/dist/**", "/plugins/**", "/", "/register", "/home", "/multiform")
         .antMatchers("/dist/**", "/plugins/**")
         .permitAll();
   }
 
   private void requestAuthorizationConfig(HttpSecurity http) throws Exception {
-    //http.authorizeRequests().anyRequest().hasRole("USER");
-
     http.authorizeRequests().antMatchers("/api/public/test1").hasAuthority("ACCESS_TEST1");
     http.authorizeRequests().antMatchers("/api/public/test2").hasAuthority("ACCESS_TEST2");
+    http.authorizeRequests().anyRequest().hasRole("USER");
   }
 
   private void loginLogoutConfig(HttpSecurity http) throws Exception {
@@ -65,6 +48,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
   private void whenSessionCreatedStrategy(HttpSecurity http) throws Exception {
     http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
+  }
+
+  @Override
+  protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    auth.inMemoryAuthentication()
+            .withUser("joshua@email.com")
+            .password(bCryptPasswordEncoder().encode("password"))
+            .roles("USER")
+            .and()
+            .withUser("admin@email.com")
+            .password(bCryptPasswordEncoder().encode("password"))
+            .roles("ADMIN")
+            .and()
+            .withUser("manager@email.com")
+            .password(bCryptPasswordEncoder().encode("password"))
+            .roles("MANAGER");
   }
 
   @Bean

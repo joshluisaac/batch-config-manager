@@ -2,11 +2,23 @@ package au.com.avantsystems.batchconfigmanager.activities;
 
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class AuthenticationController {
+
+  private static List<Person> persons = new ArrayList<>();
+
+  static {
+    persons.add(new Person("Bill", "Gates"));
+    persons.add(new Person("Steve", "Jobs"));
+  }
 
   @GetMapping("/login")
   public String renderLogin(HttpServletRequest request) {
@@ -38,4 +50,17 @@ public class AuthenticationController {
     System.out.println("multiform.....");
     return "multiform";
   }
+
+
+  @GetMapping("/groovyIndex")
+  public String renderGroovyIndex(Model model) {
+    model.addAttribute("message", "This is a groovy template");
+    model.addAttribute("persons", persons);
+    model.addAttribute("persons", persons);
+    return "groovyIndex";
+    //new ModelAndView()
+  }
+
+
+
 }

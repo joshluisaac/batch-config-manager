@@ -27,7 +27,7 @@ public class CreateBatchConfigController {
     return "Hello...world";
   }
 
-  @PreAuthorize("")
+  //@PreAuthorize("")
   @GetMapping("sessions")
   public void printSessions() {
     sessionConfig.getActiveSessions().forEach(entry -> System.out.println(entry.getId()));
