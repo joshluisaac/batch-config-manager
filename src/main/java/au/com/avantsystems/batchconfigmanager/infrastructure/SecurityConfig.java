@@ -1,11 +1,15 @@
 package au.com.avantsystems.batchconfigmanager.infrastructure;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Slf4j
 @EnableWebSecurity
@@ -16,44 +20,39 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   protected void configure(HttpSecurity http) throws Exception {
     requestPermitAllConfig(http);
     requestAuthorizationConfig(http);
+    // http.httpBasic();
     loginLogoutConfig(http);
-
-    // sessionFixationStrategy(http);
-    // whenSessionCreatedStrategy(http);
-
-    // check this
-    // http.csrf();
-    // http.cors();
-
-    // logic(http);
-
     log.info("Loaded security configuration");
   }
 
-  void logic(HttpSecurity http) throws Exception {
-    http.csrf().disable();
-    http.authorizeRequests()
-        .antMatchers("/dist/**", "/plugins/**", "/", "/register", "/home", "/multiform")
-        .permitAll()
-        .anyRequest()
-        .authenticated()
+  @Override
+  protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    auth.inMemoryAuthentication()
+        .withUser("joshua@email.com")
+        .password(bCryptPasswordEncoder().encode("password"))
+        .roles("USER")
         .and()
-        .formLogin()
-        .loginPage("/login")
-        .permitAll()
+        .withUser("admin@email.com")
+        .password(bCryptPasswordEncoder().encode("password"))
+        .roles("ADMIN")
         .and()
-        .logout()
-        .permitAll();
+        .withUser("manager@email.com")
+        .password(bCryptPasswordEncoder().encode("password"))
+        .roles("MANAGER");
   }
 
   private void requestPermitAllConfig(HttpSecurity http) throws Exception {
     http.authorizeRequests()
-        .antMatchers("/dist/**", "/plugins/**", "/", "/register", "/home", "/multiform")
+        // .antMatchers("/dist/**", "/plugins/**", "/", "/register", "/home", "/multiform")
+        .antMatchers("/dist/**", "/plugins/**")
         .permitAll();
   }
 
   private void requestAuthorizationConfig(HttpSecurity http) throws Exception {
-    http.authorizeRequests().anyRequest().authenticated();
+    //http.authorizeRequests().anyRequest().hasRole("USER");
+
+    http.authorizeRequests().antMatchers("/api/public/test1").hasAuthority("ACCESS_TEST1");
+    http.authorizeRequests().antMatchers("/api/public/test2").hasAuthority("ACCESS_TEST2");
   }
 
   private void loginLogoutConfig(HttpSecurity http) throws Exception {
@@ -66,5 +65,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
   private void whenSessionCreatedStrategy(HttpSecurity http) throws Exception {
     http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
+  }
+
+  @Bean
+  public PasswordEncoder bCryptPasswordEncoder() {
+    return new BCryptPasswordEncoder();
   }
 }

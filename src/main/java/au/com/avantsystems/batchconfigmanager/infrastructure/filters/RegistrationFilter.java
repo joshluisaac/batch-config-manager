@@ -3,7 +3,6 @@ package au.com.avantsystems.batchconfigmanager.infrastructure.filters;
 import java.io.IOException;
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
-
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -21,10 +20,7 @@ public class RegistrationFilter implements Filter {
   public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
       throws IOException, ServletException {
     HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-    //System.out.println(httpServletRequest.getSession().getId());
-    System.out.println(httpServletRequest.getRequestURL());
     chain.doFilter(request, response);
-
   }
 
   @Override
