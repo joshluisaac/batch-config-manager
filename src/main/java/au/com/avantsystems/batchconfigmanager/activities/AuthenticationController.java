@@ -23,13 +23,13 @@ public class AuthenticationController {
   @GetMapping("/login")
   public String renderLogin(HttpServletRequest request) {
     System.out.println("Got here to login...");
-    return "authentication/login";
+    return "authentication/Login";
   }
 
   @GetMapping("/register")
   public String renderRegister(HttpServletRequest request) {
     System.out.println("Got here to register");
-    return "authentication/register";
+    return "authentication/Registration";
   }
 
   /*  @PostMapping("/login")

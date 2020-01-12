@@ -1,3 +1,5 @@
+package templates.layouts
+
 yieldUnescaped '<!DOCTYPE html>'
 html(lang: 'en') {
 	head {
