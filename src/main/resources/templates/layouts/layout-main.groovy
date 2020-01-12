@@ -12,8 +12,16 @@ html(lang: 'en') {
 		link(rel: "stylesheet", href: "https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700")
 	}
 	body(class: "hold-transition sidebar-mini pace-primary") {
-		h2('A Groovy View with Spring MVC + Spring Boot')
-		div("msg: Message")
-		div("time: Time...")
+		div(class: "wrapper"){
+			include unescaped: 'layouts/NavigationBar.vfm'
+			include unescaped: 'layouts/MainSideBar.vfm'
+			include unescaped: 'layouts/PageContent.vfm'
+			include unescaped: 'layouts/MainFooter.vfm'
+			include unescaped: 'layouts/ControlSideBar.vfm'
+		}
+		script('', type:'text/javascript',src: "plugins/vendors/jquery/jquery.min.js")
+		script('', type:'text/javascript',src: "plugins/vendors/bootstrap/4_4/dist/js/bootstrap.min.js")
+		script('', type:'text/javascript',src: "plugins/vendors/pace-progress/js/pace.min.js")
+		script('', type:'text/javascript', src: "dist/js/adminlte.min.js")
 	}
 }
