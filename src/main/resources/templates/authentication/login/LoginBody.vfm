@@ -41,7 +41,7 @@
         </form>
 
         <p class="mb-1">
-            <a href="forgot-password.html">I forgot my password</a>
+            <a href="forgotpassword">I forgot my password</a>
         </p>
         <p class="mb-0">
             <a class="text-center" href="register">Register a new membership</a>

@@ -20,21 +20,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     requestPermitAllConfig(http);
     requestAuthorizationConfig(http);
     loginLogoutConfig(http);
-
-    /*    http.authorizeRequests()
-    .antMatchers("/dist/**", "/plugins/**", "/register","/index","/", "/home")
-    .permitAll()
-    .anyRequest().authenticated()
-    .and()
-    .formLogin()
-    .loginPage("/login").permitAll();*/
-
     log.info("Loaded security configuration");
   }
 
   private void requestPermitAllConfig(HttpSecurity http) throws Exception {
     http.authorizeRequests()
         .antMatchers("/dist/**", "/plugins/**", "/register", "/index", "/", "/home")
+        .permitAll();
+    http.authorizeRequests()
+        .antMatchers("/login", "/register", "/", "/forgotpassword", "/passwordrecovery")
         .permitAll();
   }
 
