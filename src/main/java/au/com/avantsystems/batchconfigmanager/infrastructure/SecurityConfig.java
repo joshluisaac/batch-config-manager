@@ -2,7 +2,6 @@ package au.com.avantsystems.batchconfigmanager.infrastructure;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -13,29 +12,36 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Slf4j
 @EnableWebSecurity
-@Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
+    http.csrf().disable();
     requestPermitAllConfig(http);
     requestAuthorizationConfig(http);
-    // http.httpBasic();
     loginLogoutConfig(http);
+
+    /*    http.authorizeRequests()
+    .antMatchers("/dist/**", "/plugins/**", "/register","/index","/", "/home")
+    .permitAll()
+    .anyRequest().authenticated()
+    .and()
+    .formLogin()
+    .loginPage("/login").permitAll();*/
+
     log.info("Loaded security configuration");
   }
 
-
   private void requestPermitAllConfig(HttpSecurity http) throws Exception {
     http.authorizeRequests()
-        .antMatchers("/dist/**", "/plugins/**", "/register")
+        .antMatchers("/dist/**", "/plugins/**", "/register", "/index", "/", "/home")
         .permitAll();
   }
 
   private void requestAuthorizationConfig(HttpSecurity http) throws Exception {
     http.authorizeRequests().antMatchers("/api/public/test1").hasAuthority("ACCESS_TEST1");
     http.authorizeRequests().antMatchers("/api/public/test2").hasAuthority("ACCESS_TEST2");
-    http.authorizeRequests().anyRequest().hasRole("USER");
+    http.authorizeRequests().anyRequest().authenticated();
   }
 
   private void loginLogoutConfig(HttpSecurity http) throws Exception {
@@ -53,17 +59,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(AuthenticationManagerBuilder auth) throws Exception {
     auth.inMemoryAuthentication()
-            .withUser("joshua@email.com")
-            .password(bCryptPasswordEncoder().encode("password"))
-            .roles("USER")
-            .and()
-            .withUser("admin@email.com")
-            .password(bCryptPasswordEncoder().encode("password"))
-            .roles("ADMIN")
-            .and()
-            .withUser("manager@email.com")
-            .password(bCryptPasswordEncoder().encode("password"))
-            .roles("MANAGER");
+        .withUser("joshua@email.com")
+        .password(bCryptPasswordEncoder().encode("password"))
+        .roles("USER")
+        .and()
+        .withUser("admin@email.com")
+        .password(bCryptPasswordEncoder().encode("password"))
+        .roles("ADMIN")
+        .and()
+        .withUser("manager@email.com")
+        .password(bCryptPasswordEncoder().encode("password"))
+        .roles("MANAGER");
   }
 
   @Bean

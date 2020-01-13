@@ -1,4 +1,4 @@
-package templates.layouts
+package templates.home
 
 yieldUnescaped '<!DOCTYPE html>'
 html(lang: 'en') {
@@ -15,11 +15,11 @@ html(lang: 'en') {
 	}
 	body(class: "hold-transition sidebar-mini pace-primary") {
 		div(class: "wrapper"){
-			include unescaped: 'layouts/NavigationBar.vfm'
-			include unescaped: 'layouts/MainSideBar.vfm'
-			include unescaped: 'layouts/PageContent.vfm'
-			include unescaped: 'layouts/MainFooter.vfm'
-			include unescaped: 'layouts/ControlSideBar.vfm'
+			include unescaped: 'home/NavigationBar.vfm'
+			include unescaped: 'home/MainSideBar.vfm'
+			include unescaped: 'home/PageContent.vfm'
+			include unescaped: 'home/MainFooter.vfm'
+			include unescaped: 'home/ControlSideBar.vfm'
 		}
 		script('', type:'text/javascript',src: "plugins/vendors/jquery/jquery.min.js")
 		script('', type:'text/javascript',src: "plugins/vendors/bootstrap/4_4/dist/js/bootstrap.min.js")
