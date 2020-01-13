@@ -9,6 +9,7 @@ html(lang: 'en') {
         link(rel: "stylesheet", href: "https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css")
         link(rel: "stylesheet", href: "plugins/vendors/bootstrap/4_4/dist/css/bootstrap.min.css")
     }
+
     body {
         include unescaped: 'modalform/MultiFormBody.vfm'
         script('', type:'text/javascript',src: "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js")
