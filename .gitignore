@@ -26,6 +26,7 @@ hs_err_pid*
 
 
 /target/
+/bin/
 target
 !.mvn/wrapper/maven-wrapper.jar
 
